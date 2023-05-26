@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,13 +10,42 @@ export class LoginComponent {
 
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
-  ngOnInit(): void{
-    this.loginForm = this.fb.group ({
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
       email: ['', Validators.required],
-      password:['', Validators.required]
+      password: ['', Validators.required]
     });
   }
-  
+
+  checkEmail() {
+    return this.loginForm.controls['email'].dirty && this.loginForm.hasError('required', 'email')
+  }
+
+  checkPassword() {
+    return this.loginForm.controls['password'].dirty && this.loginForm.controls['password'].errors?.['required'];
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      //Enviar os dados para API
+      console.log(this.loginForm.value)
+    } else {
+      //Disparar um erro
+      this.validateAllFormFields(this.loginForm);
+    }
+  }
+
+  private validateAllFormFields(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(field => {
+      const control = formGroup.get(field);
+      if (control instanceof FormControl) {
+        control.markAsDirty({ onlySelf: true });
+      } else if (control instanceof FormGroup) {
+        this.validateAllFormFields(control);
+      }
+    });
+  }
+
 }
