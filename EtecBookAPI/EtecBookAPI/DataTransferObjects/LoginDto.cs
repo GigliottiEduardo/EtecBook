@@ -1,15 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace EtecBookAPI.DataTransferObjects;
+namespace EtecBookAPI.DataTransferObject;
 
-    public class LoginDto
-    {
-        [Required(ErrorMessage = "Informe o Email ou Nome de Usuário")]
-        [StringLength(100, ErrorMessage ="O Email ou Nome deve possuir no máximo 100 caracteres")]
-        public string Email { get; set; }
-
-        [DataType(DataType.Password)]
-        [Required(ErrorMessage = "Informe a Senha")]
-        [StringLength(20, ErrorMessage ="O Senha deve possuir no máximo 20 caracteres")]
-        public string Password { get; set; }
-    }
+public class LoginDto
+{
+    [Required(ErrorMessage = "Informe o email ou nome de usuário")]
+    [StringLength(100, ErrorMessage ="O email ou nome deve possuir no máximo 100 caracteres")]
+    public string Email { get; set; }
+    
+    [DataType(DataType.Password)]
+    [Required(ErrorMessage = "Informe a senha")]
+    [StringLength(20, ErrorMessage ="A senha deve possuir no máximo 20 caracteres")]
+    public string Password { get; set; }
+}
